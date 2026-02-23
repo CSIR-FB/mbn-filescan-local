@@ -1,7 +1,10 @@
-version: "3.9"
+version: '3.9'
 services:
   filescan:
-    build: .
-    image: "mbndata/filescan:1.0"
+    image: "mbn-filescan:2.0"
+    restart: always
+    container_name: mbn-filescan-local
     ports:
       - "3000:3000"
+    volumes:
+      - /opt/docker_persist/mbn-filescan-local/merged/usr/src/app/services/:/usr/src/app/services/
