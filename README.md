@@ -2,6 +2,8 @@
 MBN Data filescan - on premise container solution
 ClamAV 1.2.2
 
+Credit to Martin B Nielsen: https://github.com/martinbnielsen/mbn-filescan-local
+
 mkdir -p /opt/docker_persist
 
 cd /opt/docker_persist
