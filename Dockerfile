@@ -1,29 +1,41 @@
-FROM alpine:latest
-LABEL maintainer="Martin B. Nielsen"
+FROM alpine:3.19
 
-RUN apk update && apk add pv clamav clamav-libunrar unrar bash npm
+LABEL maintainer="Craig Strydom"
 
-# Setup clamd directory
-RUN mkdir /run/clamav \
-    && chown clamav:clamav /run/clamav \
+# Install required packages
+RUN apk add --no-cache \
+    bash \
+    pv \
+    nodejs \
+    npm \
+    clamav \
+    clamav-daemon \
+    clamav-libunrar
+
+# Setup ClamAV directories
+RUN mkdir -p /run/clamav \
+    && chown -R clamav:clamav /run/clamav \
+    && mkdir -p /var/log/clamav \
     && touch /var/log/clamav/freshclam.log \
-    && chown clamav:clamav /var/log/clamav/freshclam.log
+    && chown -R clamav:clamav /var/log/clamav
 
-# Create app directory
-ENV APP_PATH /usr/src/app
+# Set working directory
+ENV APP_PATH=/usr/src/app
 WORKDIR $APP_PATH
 
-# Install app dependencies
-# A wildcard is used to ensure both package.json AND package-lock.json are copied
-# where available (npm@5+)
+# Copy package files
 COPY src/package*.json ./
 
-# Build node project for production
-RUN npm ci --only=production
+# Install Node dependencies
+RUN npm install --omit=dev
 
-# Bundle app source
+# Copy application source
 COPY src/. .
 
+# Optional but recommended: initial signature update
+RUN freshclam || true
+
 EXPOSE 3000
+
 COPY bootstrap.sh /bootstrap.sh
-ENTRYPOINT [ "sh", "/bootstrap.sh" ]
+ENTRYPOINT ["sh", "/bootstrap.sh"]
