@@ -12,6 +12,13 @@ RUN apk add --no-cache \
     clamav-daemon \
     clamav-libunrar
 
+RUN apk add --no-cache tzdata
+
+ENV TZ=Africa/Johannesburg
+
+RUN cp /usr/share/zoneinfo/Africa/Johannesburg /etc/localtime \
+ && echo "Africa/Johannesburg" > /etc/timezone
+
 # Setup ClamAV directories
 RUN mkdir -p /run/clamav \
     && chown -R clamav:clamav /run/clamav \

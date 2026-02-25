@@ -1,7 +1,7 @@
-version: '3.9'
 services:
   filescan:
-    image: "mbn-filescan:2.0"
+    build: .
+    image: mbn-filescan:2.0
     restart: always
     container_name: mbn-filescan-local
     ports:
