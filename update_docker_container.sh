@@ -88,7 +88,14 @@ docker exec -it mbn-filescan-local date
 echo "Displaying container logs..."
 docker logs mbn-filescan-local
 
-echo "Delete old images..."
-echo "docker rmi <image id> -f
+###############################################################################
+echo "Delete old images when you are done."
+echo "docker image"
+echo "docker rmi <image id> -f"
+
+echo "To reset the repo if local changes were made. This deletes all changes."
+echo "git fetch origin"
+echo "git reset --hard origin/main"
+
 
 
